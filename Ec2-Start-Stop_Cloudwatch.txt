@@ -1,0 +1,101 @@
+Start
+===================
+
+import boto3
+import collections
+import datetime
+import sys
+import pprint
+
+ec = boto3.client('ec2')
+#image = ec.Image('id')
+def lambda_handler(event, context):
+    
+    reservations = ec.describe_instances(
+        Filters=[
+            {'Name' : 'tag:StartStop', 'Values' : ['Yes', 'yes' ]},
+        ]
+    ).get(
+        'Reservations', []
+    )
+
+    instances = sum(
+        [
+            [i for i in r['Instances']]
+            for r in reservations
+        ], [])
+
+    print "Found %d instances those are going to start" % len(instances)
+    for instance in instances:
+        InstID = instance['InstanceId']
+        ec.start_instances(InstanceIds = [InstID])
+        #print "Instances to be started " + str(InstID)
+        #print "Instances : " + str(instances)
+        print "Instances TAG : " + str(instance['Tags'])
+		
+
+		
+Stopping
+==================
+import boto3
+import collections
+import datetime
+import sys
+import pprint
+
+ec = boto3.client('ec2')
+#image = ec.Image('id')
+
+def lambda_handler(event, context):
+    
+    reservations = ec.describe_instances(
+        Filters=[
+            {'Name' : 'tag:StartStop', 'Values' : ['Yes','yes']},
+        ]
+    ).get(
+        'Reservations', []
+    )
+
+    instances = sum(
+        [
+            [i for i in r['Instances']]
+            for r in reservations
+        ], [])
+
+    print "Found %d instances those are going to stop" % len(instances)
+    for instance in instances:
+        InstID = instance['InstanceId']
+        print "Stopping instance " + str(InstID)
+        ec.stop_instances(InstanceIds = [InstID])
+        #print "Instances to be started " + str(InstID)
+        #print "Instances : " + str(instances)
+        print "Instances TAG : " + str(instance['Tags'])
+		
+		
+		
+30 03 ? * MON-FRI *
+30 15 ? * MON-FRI *  --- 9pm IST
+30 13 ? * MON-SAT *
+
+Stop-EC2_Mon-to-Sat-7pm
+
+db = 500gb ebs
+3d index = 500
+
+efs = 2tb
+fsx = 2tb
+
+
+vi /etc/hosts
+172.0.1.103 erts.spoton.co.in ip-172-0-1-103.ap-south-1.compute.internal
+
+
+
+
+lets encrypt
+
+
+Krishan - 2332
+
+
+172.0.1.106 lms.spoton.co.in ip-172-0-1-106.ap-south-1.compute.internal
